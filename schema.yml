@@ -1,0 +1,436 @@
+title: "OCI Template NPRD"
+description: "OCI NPRD"
+stackDescription: "OCI Template for NPRD"
+schemaVersion: 1.1.0
+version: "20201126"
+locale: "en"
+
+variableGroups:
+- title: "General Configuration"
+  visible: false
+  variables:
+  - tenancy_ocid
+  - user_ocid
+  - fingerprint
+  - private_key_path
+  - region
+
+- title: "Required Configuration"
+  visible: true  
+  variables:
+  - compartment_ocid
+  - customer_label
+  - subnet_compartment
+  - show_advanced 
+
+- title: "Compute  Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - subnet_ocid1
+  - availablity_domain_name
+  - computeip_dev
+  - computeip_test
+  - shape_ocpus
+  - shape_mem
+  - backup_policy
+  - boot_volume_size_in_gbs
+  - instance_shape
+  - instance_os
+  - linux_os_version
+  - ssh_key_nonprod
+  - nsg
+
+
+- title: "Database Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - subnet_ocid2
+  - availablity_domain_name2
+  - character_set
+  - db_ncharacter_set
+  - db_edition
+  - db_version
+  - data_storage_size_in_gb
+  - db_workload
+  - db_shape
+  - ssh_key_db
+
+- title: "LoadBalancer Configuration"
+  visibile:
+      and:
+        - show_advanced
+  variables:
+    - subnet_ocid_lb
+    - lb_shape
+    - private_key1
+    - public_certificate1
+    - public_certificate2
+    - ca_certificate1
+
+variables:
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options."
+    visible: true
+    default: false
+
+  # General Configuration
+
+  tenancy_ocid:
+    title: "Tenancy ID"
+    description: "The Oracle Cloud Identifier (OCID) for your tenancy"
+    type: string
+    required: true
+    visibile: false
+
+  region:
+    title: "Region"
+    description: "Choose Region where you deploy your Webserver"
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  compartment_ocid:
+    title: "Compartment OCID"
+    description: "Choose Comparment where you deploy your Webserver"
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+  
+  subnet_compartment:
+    title: "Subnet Compartment OCID"
+    description: "Choose Comparment where Subnet is located"
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+  
+  customer_label:
+    title: "customer label"
+    description: "Label used as a prefix for naming resources"
+    type: string
+    required: true
+    visibile: false
+  
+  nsg:
+    title: "Network security groups"
+    description: "Network security groups for the instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+
+
+  # Compute Configuration
+  
+  subnet_ocid1:
+    title: "Subnet OCID"
+    description: "Choose subnet where you deploy your instance"
+    type: oci:core:subnet:id
+    required: true
+    visibile: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  computeip_test:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Compute Private IP"
+    default: "10.223.16.66/26"
+    description: "Choose Compute Private IP"
+
+  computeip_dev:
+    type: string
+    required: false
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Compute Private IP"
+    default: "10.223.16.66/26"
+    description: "Choose Compute Private IP"
+
+  availablity_domain_name:
+    type: enum
+    required: true
+    visibile: true
+    title: "Availability Domain to be chosen"
+    description: "Choose Availability Domain where your application will be deployed."
+    default: "3"
+    enum:
+      - "1"
+      - "2"
+      - "3"
+
+  instance_shape:
+    type: oci:core:instanceshape:name
+    title: "Instance Shape"
+    description: "Choose a shape for your instance"
+    default: "VM.Standard.E2.1"
+    required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+  shape_ocpus:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 2
+    title: " Shape OCPUs"
+    description: "Choose number of OCPUs for Shape."
+
+  shape_mem:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 16
+    title: " Shape Memory (GB)"
+    description: "Choose number GB for Shape Memory."
+
+  instance_os:
+    type: enum
+    required: false
+    visible: true
+    title: "Instance OS"
+    description: "Choose Operating System that determines the operating system for Webserver host."
+    default: "Oracle Linux"
+    enum:
+      - "Oracle Linux"
+
+  linux_os_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Instance OS version"
+    description: "Choose Operating System version that determines the operating system version for Webserver host."
+    default: "7.9"
+    enum:
+      - "7.9"  
+
+  backup_policy:
+    type: enum
+    required: false
+    title: "backup policy"
+    description: "choose backup policy for instances"
+    default: "silver"
+    enum:
+      - "silver"
+      - "bronze"
+      - "gold"
+  
+  boot_volume_size_in_gbs:
+    type: number
+    required: false
+    multipleOf: 1
+    default: 100
+    title: " Shape Memory (GB)"
+    description: "Choose number GB for Shape Memory."
+
+  ssh_key_nonprod:
+    title: SSH Public Key
+    description: The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH
+    # renders variable as an SSH key control
+    type: oci:core:ssh:publickey
+    required: true
+
+   
+  # DB Configuration
+
+  subnet_ocid2:
+    title: "Subnet OCID"
+    description: "Choose subnet where you deploy your instance"
+    type: oci:core:subnet:id
+    required: true
+    visibile: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  db_ncharacter_set:
+    required: false
+    default: "AL16UTF16"
+    title: "Database NCharacter set"
+    description: "Choose Database NCharacter set for your DBSystem." 
+    enum:
+      - "AL16UTF16"
+
+  character_set:
+    type: enum
+    required: false
+    default: "UTF8"
+    title: "Database Character set"
+    description: "Choose Database Character set for your DBSystem." 
+    enum:
+      - "WE8MSWIN1252"
+      - "AL32UTF8"
+      - "UTF8"
+
+  db_workload:
+    type: enum
+    required: false
+    default: "OLTP"
+    title: "Database workload"
+    description: "Choose Database workload for your DBSystem." 
+    enum:
+      - "OLTP"
+
+  db_version:
+    type: enum
+    required: false
+    default: "19.11.0.0"
+    title: "Database version"
+    description: "Choose DB version for your DBSystem." 
+    enum:
+      - "11.2.0.4" 
+      - "11.2.0.4.200114" 
+      - "11.2.0.4.200414" 
+      - "11.2.0.4.200714" 
+      - "11.2.0.4.201020" 
+      - "12.1.0.2" 
+      - "12.1.0.2.200114" 
+      - "12.1.0.2.200414" 
+      - "12.1.0.2.200714" 
+      - "12.1.0.2.201020" 
+      - "12.2.0.1" 
+      - "12.2.0.1.200114" 
+      - "12.2.0.1.200414" 
+      - "12.2.0.1.200714" 
+      - "12.2.0.1.201020" 
+      - "18.0.0.0" 
+      - "18.10.0.0" 
+      - "18.11.0.0" 
+      - "18.12.0.0" 
+      - "18.9.0.0" 
+      - "19.0.0.0" 
+      - "19.6.0.0" 
+      - "19.7.0.0" 
+      - "19.8.0.0" 
+      - "19.9.0.0"
+      - "19.11.0.0"
+      - "19.12.0.0"
+      - "21.0.0.0" 
+      - "21.1.0.0"
+
+  db_edition:
+    type: enum
+    required: false
+    default: "ENTERPRISE_EDITION"
+    title: "DB Edition"
+    description: "Choose DB Edition for your DBSystem." 
+    enum:
+      - "STANDARD_EDITION"
+      - "ENTERPRISE_EDITION"
+  
+  data_storage_size_in_gb:
+    type: number
+    required: false
+    default: 512
+    minimum: 256
+    maximum: 40960
+    multipleOf: 256
+    title: "Database storage size in GB"
+    description: "Choose database storage size in GB for your DBSystem."
+
+  db_shape:
+    type: enum
+    required: false
+    default: "VM.Standard2.2"
+    title: "DB System Shape"
+    description: "Choose the shape for your DBSystem."
+    enum:
+      - "VM.Standard1.2"
+      - "VM.Standard2.1"
+      - "VM.Standard1.2"
+      - "VM.Standard2.2"
+      - "VM.Standard1.4"
+      - "VM.Standard2.4"
+      - "VM.Standard1.8"
+      - "VM.Standard2.8"
+      - "VM.Standard1.16"
+      - "VM.Standard2.2"
+      - "VM.Standard2.16"
+      - "VM.Standard2.24"
+      - "BM.DenseIO2.52"
+      - "BM.DenseIO1.36" 
+
+  availablity_domain_name2:
+    type: enum
+    required: true
+    visibile: true
+    title: "Availability Domain to be chosen"
+    description: "Choose Availability Domain where your application will be deployed."
+    default: "2"
+    enum:
+      - "1"
+      - "2"
+      - "3"
+
+  ssh_key_db:
+    title: SSH Public Key
+    description: The public SSH key for the key-pair that you want to use, if you wish to login to the instances over SSH
+    # renders variable as an SSH key control
+    type: oci:core:ssh:publickey
+    required: true
+
+
+  # LoadBalancer Configuration 
+
+  subnet_ocid_lb:
+    title: "Subnet OCID"
+    description: "Choose subnet where you deploy your instance"
+    type: oci:core:subnet:id
+    required: true
+    visibile: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  lb_shape:
+    type: enum
+    title: "Load Balanacer Shape"
+    description: "Load Balanacer Shape"
+    default: "flexible"
+    required: false 
+    enum:
+      - "flexible"
+      - "100Mbps"
+      - "10Mbps"
+      - "10Mbps-Micro"
+      - "400Mbps"
+      - "8000Mbps"
+
+  private_key1:
+    title: private key
+    description: private key
+    # renders variable as an SSH key control
+    type: file
+    required: true
+
+  public_certificate1:
+    title: public certificate nprd_int_wildcard_cert
+    description: The public certificate nprd_int_wildcard_cert
+    # renders variable as an SSH key control
+    type: oci:core:ssh:publickey
+    required: true
+
+  public_certificate2:
+    title: public certificate nprd_int_wildcard_cert_SAN
+    description: public certificate nprd_int_wildcard_cert_SAN
+    # renders variable as an SSH key control
+    type: file
+    required: true
+
+  ca_certificate1:
+    title: ca certificate
+    description: ca certificate
+    # renders variable as an SSH key control
+    type: file
+    required: true
+
