@@ -9,7 +9,7 @@ resource "oci_load_balancer_load_balancer" "nprd_int_lb" {
     subnet_ids                 = var.subnet_ocid_lb  
     defined_tags               = local.tags
     is_private                 = true
-    network_security_group_ids = var.nsg
+    network_security_group_ids = local.nsg_dev
 }
 
 ############################################################################

@@ -20,7 +20,7 @@ module "db-system-dev" {
   hostname                       = "${var.customer_label}DEVDB"
   display_name                   = "${var.customer_label}DEVDB"
   defined_tags                   = local.tags
-  network_sec_groups             = [ var.nsg ]
+  network_sec_groups             = local.nsg_dev_db
   create_data_guard              = false
 }
 

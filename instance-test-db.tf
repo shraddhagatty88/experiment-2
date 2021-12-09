@@ -20,7 +20,7 @@ module "db-system-test" {
   hostname                       = "${var.customer_label}TESTDB"
   display_name                   = "${var.customer_label}TESTDB"
   defined_tags                   = local.tags
-  network_sec_groups             = [ var.nsg ]
+  network_sec_groups             = local.nsg_test_db
   create_data_guard              = false
 }
 

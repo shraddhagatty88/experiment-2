@@ -40,7 +40,24 @@ variableGroups:
   - instance_os
   - linux_os_version
   - ssh_key_nonprod
-  - nsg
+
+- title: "Network Security Groups(DEV-Compute)"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - nsg1_dev
+  - nsg2_dev
+  - nsg3_dev
+
+- title: "Network Security Groups(Test-Compute)"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - nsg1_test
+  - nsg2_test
+  - nsg3_test
 
 
 - title: "Database Configuration"
@@ -58,6 +75,24 @@ variableGroups:
   - db_workload
   - db_shape
   - ssh_key_db
+
+- title: "Network Security Groups(DEV-DB)"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - nsg1_dev_db
+  - nsg2_dev_db
+  - nsg3_dev_db
+
+- title: "Network Security Groups(Test-DB)"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - nsg1_test_db
+  - nsg2_test_db
+  - nsg3_test_db
 
 - title: "LoadBalancer Configuration"
   visibile:
@@ -117,9 +152,110 @@ variables:
     required: true
     visibile: false
   
-  nsg:
+  #NSG Compute
+  nsg1_dev:
     title: "Network security groups"
-    description: "Network security groups for the instance"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
+  nsg2_dev:
+    title: "Network security groups"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_dev:
+    title: "Network security groups"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg1_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg2_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
+  #NSG DB
+  nsg1_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
+  nsg2_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg1_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg2_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
     type: oci:core:nsg:id
     required: false
     visible: true
@@ -417,7 +553,7 @@ variables:
     title: public certificate nprd_int_wildcard_cert
     description: The public certificate nprd_int_wildcard_cert
     # renders variable as an SSH key control
-    type: oci:core:ssh:publickey
+    type: file
     required: true
 
   public_certificate2:

@@ -116,11 +116,30 @@ variable instance_shape {
 variable "computeip_test" {}
 variable "computeip_dev" {}
 variable "ssh_key_nonprod" {}
-variable "nsg" { 
-  default     = []
-  }
 variable "instance_os" {}
 variable "linux_os_version" {}
+
+######NSG-COMPUTE########
+#DEV
+variable "nsg1_dev" {}
+variable "nsg2_dev" {}
+variable "nsg3_dev" {}
+locals {
+
+nsg_dev = flatten( [ var.nsg1_dev,var.nsg2_dev, var.nsg3_dev] )
+
+}
+
+#TEST
+variable "nsg1_test" {}
+variable "nsg2_test" {}
+variable "nsg3_test" {}
+locals {
+
+nsg_test = flatten( [ var.nsg1_test,var.nsg2_test, var.nsg3_test] )
+
+}
+
 
 
 ############################################################################
@@ -153,6 +172,28 @@ variable "db_shape" {
 }
 
 variable "ssh_key_db" {}
+
+######NSG-DB########
+#DEV
+variable "nsg1_dev_db" {}
+variable "nsg2_dev_db" {}
+variable "nsg3_dev_db" {}
+locals {
+
+nsg_dev_db = flatten( [ var.nsg1_dev_db,var.nsg2_dev_db, var.nsg3_dev_db] )
+
+}
+
+#TEST
+variable "nsg1_test_db" {}
+variable "nsg2_test_db" {}
+variable "nsg3_test_db" {}
+locals {
+
+nsg_test_db = flatten( [ var.nsg1_test_db,var.nsg2_test_db, var.nsg3_test_db] )
+
+}
+
 
 
 #####################################################################################################
