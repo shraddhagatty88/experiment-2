@@ -95,7 +95,7 @@ variableGroups:
   - nsg3_test_db
 
 - title: "LoadBalancer Configuration"
-  visibile:
+  visible:
       and:
         - show_advanced
   variables:
@@ -152,117 +152,6 @@ variables:
     required: true
     visibile: false
   
-  #NSG Compute
-  nsg1_dev:
-    title: "Network security groups"
-    description: "Network security groups for DEV instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-  
-  nsg2_dev:
-    title: "Network security groups"
-    description: "Network security groups for DEV instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg3_dev:
-    title: "Network security groups"
-    description: "Network security groups for DEV instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg1_test:
-    title: "Network security groups"
-    description: "Network security groups for TEST instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg2_test:
-    title: "Network security groups"
-    description: "Network security groups for TEST instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg3_test:
-    title: "Network security groups"
-    description: "Network security groups for TEST instance"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-  
-  #NSG DB
-  nsg1_dev_db:
-    title: "Network security groups"
-    description: "Network security groups for DEV DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-  
-  nsg2_dev_db:
-    title: "Network security groups"
-    description: "Network security groups for DEV DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg3_dev_db:
-    title: "Network security groups"
-    description: "Network security groups for DEV DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg1_test_db:
-    title: "Network security groups"
-    description: "Network security groups for TEST DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg2_test_db:
-    title: "Network security groups"
-    description: "Network security groups for TEST DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-  nsg3_test_db:
-    title: "Network security groups"
-    description: "Network security groups for TEST DB"
-    type: oci:core:nsg:id
-    required: false
-    visible: true
-    dependsOn: 
-      compartmentId: ${subnet_compartment}
-
-
 
   # Compute Configuration
   
@@ -279,17 +168,17 @@ variables:
     type: string
     required: false
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: "Compute Private IP"
+    title: "Compute Private IP(TEST)"
     default: "10.223.16.66/26"
-    description: "Choose Compute Private IP"
+    description: "Choose Test Compute Private IP"
 
   computeip_dev:
     type: string
     required: false
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: "Compute Private IP"
+    title: "Compute Private IP(DEV)"
     default: "10.223.16.66/26"
-    description: "Choose Compute Private IP"
+    description: "Choose Dev Compute Private IP"
 
   availablity_domain_name:
     type: enum
@@ -378,6 +267,62 @@ variables:
     type: oci:core:ssh:publickey
     required: true
 
+
+  #NSG Compute
+  nsg1_dev:
+    title: "Network security groups"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
+  nsg2_dev:
+    title: "Network security groups"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_dev:
+    title: "Network security groups"
+    description: "Network security groups for DEV instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg1_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg2_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_test:
+    title: "Network security groups"
+    description: "Network security groups for TEST instance"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
    
   # DB Configuration
 
@@ -516,6 +461,60 @@ variables:
     type: oci:core:ssh:publickey
     required: true
 
+  #NSG DB
+  nsg1_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+  
+  nsg2_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_dev_db:
+    title: "Network security groups"
+    description: "Network security groups for DEV DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg1_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg2_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
+
+  nsg3_test_db:
+    title: "Network security groups"
+    description: "Network security groups for TEST DB"
+    type: oci:core:nsg:id
+    required: false
+    visible: true
+    dependsOn: 
+      compartmentId: ${subnet_compartment}
 
   # LoadBalancer Configuration 
 
